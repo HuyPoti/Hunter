@@ -7,7 +7,7 @@ clock = pygame.time.Clock()
 
 frames = []
 for i in range(2):
-    path = os.path.join("sprite", f"frame_{i}.png")
+    path = os.path.join("sprites", "attack3" ,  f"frame_{i}.png")
     img = pygame.image.load(path).convert_alpha()
     frames.append(img) 
 
