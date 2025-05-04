@@ -5,11 +5,12 @@ from utils.settings import *
 from engine.timer import Timer
 
 class DialogTree:
-    def __init__(self, character, player, all_sprites, font):
+    def __init__(self, character, player, all_sprites, font, end_dialog):
         self.player = player
         self.character = character
         self.font = font
         self.all_sprites = all_sprites
+        self.end_dialog = end_dialog
 
         self.dialog = character.get_dialog()
         self.dialog_num = len(self.dialog)
@@ -26,10 +27,10 @@ class DialogTree:
                 self.current_dialog = DialogSprite(self.dialog[self.dialog_index], self.character, self.all_sprites, self.font)
                 self.dialog_timer.activate()
             else:
-                pass
+                self.end_dialog(self.character)
     def update(self):
-        self.input()
         self.dialog_timer.update()
+        self.input()
 class DialogSprite(pygame._sprite.Sprite):
     def __init__(self, message, character, groups, font):
         super().__init__(groups)
