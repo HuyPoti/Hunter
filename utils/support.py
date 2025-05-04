@@ -51,5 +51,5 @@ def check_connection(radius, entity, target, tolerance = 30):
     relation = vector(target.rect.center) - vector(entity.rect.center)
     if relation.length() < radius:
         if entity.facing_direction == 'stand_left' and relation.x < 0 and abs(relation.y) < tolerance or \
-           entity.facing_direction == 'stand_right' and relation.x > 0 and abs(relation.y) < tolerance:
+            entity.facing_direction == 'stand_right' and relation.x > 0 and abs(relation.y) < tolerance:
             return True
