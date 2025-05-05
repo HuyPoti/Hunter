@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="24" nextobjectid="314">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="24" nextobjectid="318">
  <tileset firstgid="1" source="../assets/tilesets/Flat.tsx"/>
  <tileset firstgid="41" source="../assets/tilesets/Water.tsx"/>
  <tileset firstgid="42" source="../assets/tilesets/Foam.tsx"/>
@@ -239,7 +239,6 @@
   <object id="127" name="Tree" gid="69" x="1858" y="573" width="112" height="173"/>
   <object id="128" name="Tree" gid="69" x="1856" y="831" width="112" height="173"/>
   <object id="130" gid="123" x="1122" y="692" width="128" height="192"/>
-  <object id="131" name="Castle" type="Building" gid="2147483694" x="2248.49" y="723.154" width="320" height="256"/>
   <object id="132" name="Tower" type="Building" gid="58" x="1492.01" y="557.336" width="128" height="256"/>
   <object id="133" name="Tower" type="Building" gid="58" x="1601.1" y="557.336" width="128" height="256"/>
   <object id="134" name="Houses" type="Building" gid="52" x="1973.82" y="664.73" width="128" height="192"/>
@@ -251,11 +250,12 @@
   <object id="140" name="House" type="Building" gid="52" x="2434.43" y="558.668" width="128" height="192"/>
   <object id="141" name="Destruct" gid="60" x="569.515" y="685.88" width="128" height="220"/>
   <object id="142" name="Tree" gid="69" x="1886" y="977" width="112" height="173"/>
-  <object id="238" gid="2147483770" x="1269.94" y="900.606" width="128" height="192"/>
  </objectgroup>
  <objectgroup id="18" name="Position">
   <object id="101" name="Player" x="96" y="736">
    <properties>
+    <property name="damage" type="int" value="20"/>
+    <property name="hp" type="int" value="100"/>
     <property name="pos" value="start"/>
    </properties>
    <point/>
@@ -278,10 +278,12 @@
    </properties>
    <point/>
   </object>
-  <object id="239" name="Monster spawn" x="1216.91" y="844.97">
-   <point/>
-  </object>
-  <object id="241" name="Monster" x="801.515" y="831.879">
+  <object id="241" name="Torch" x="856.306" y="782.069">
+   <properties>
+    <property name="damage" type="int" value="10"/>
+    <property name="hp" type="int" value="100"/>
+    <property name="speed" type="int" value="200"/>
+   </properties>
    <point/>
   </object>
   <object id="295" name="Character" x="296" y="754">
@@ -292,6 +294,32 @@
     <property name="graphic" value="friend"/>
    </properties>
    <point/>
+  </object>
+  <object id="314" name="TNT" x="799.455" y="622.629">
+   <properties>
+    <property name="damage" type="int" value="15"/>
+    <property name="hp" type="int" value="80"/>
+    <property name="speed" type="int" value="150"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="315" name="Meat" x="2111.96" y="1118.24">
+   <point/>
+  </object>
+  <object id="316" name="Coin" x="1608.87" y="580.29">
+   <point/>
+  </object>
+  <object id="238" name="MonsterHouse" gid="2147483770" x="1269.94" y="900.606" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="131" name="Portal" type="Building" gid="2147483694" x="2248.49" y="723.154" width="320" height="256">
+   <properties>
+    <property name="target_map" type="int" value="2"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="13" name="Effect">
@@ -308,7 +336,7 @@
   <object id="254" x="2051.33" y="384.667" width="507.333" height="61.3333"/>
   <object id="255" x="2002.67" y="598" width="72" height="38.6667"/>
   <object id="256" x="2114.67" y="603.333" width="74.6667" height="35.3333"/>
-  <object id="257" x="2282.67" y="616.667" width="250.667" height="79.3333"/>
+  <object id="257" x="2282.67" y="546.933" width="250.667" height="79.3333"/>
   <object id="258" x="2358" y="484" width="71.3333" height="34.6667"/>
   <object id="259" x="2466.67" y="492.667" width="63.3333" height="29.3333"/>
   <object id="260" x="2002" y="794.667" width="70" height="32"/>

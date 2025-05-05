@@ -41,9 +41,9 @@ class Arrow(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = surf
         self.rect = self.image.get_rect(center=pos)
-        self.direction = direction.normalize()  # Hướng di chuyển
+        self.direction = direction.normalize()
         self.speed = speed
-        self.lifetime = 2000  # Thời gian tồn tại của mũi tên (ms)
+        self.lifetime = 2000  # Thời gian tồn tại của mũi tên
         self.spawn_time = pygame.time.get_ticks()
 
     def update(self, dt):
