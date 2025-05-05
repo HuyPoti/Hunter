@@ -13,9 +13,10 @@ class Game:
         pygame.display.set_caption('Hunter')
         pygame.display.set_icon(pygame.image.load(join('.', 'assets', 'icon.png')))
         self.import_assets()
-        self.current_stage = Level(self.tmx_maps[1])
+        self.level = Level(self.tmx_maps)
+        #self.current_stage = Level(self.tmx_maps[1])
         self.clock = pygame.time.Clock()
-    def import_assets(self):
+    def import_assets(self):  
         self.tmx_maps = {
             1: load_pygame(join('.', 'maps', 'map1.tmx')),
             2: load_pygame(join('.', 'maps', 'map2.tmx')),
@@ -30,8 +31,8 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    sys.exit() 
-            self.current_stage.run(dt)
+                    sys.exit()
+            self.level.run(dt) 
             pygame.display.update()
 
 if __name__ == '__main__':

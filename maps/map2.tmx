@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="19" nextobjectid="356">
+
  <tileset firstgid="1" source="../assets/tilesets/Water.tsx"/>
  <tileset firstgid="2" source="../assets/tilesets/Elevation.tsx"/>
  <tileset firstgid="34" source="../assets/tilesets/Bridge_All.tsx"/>
@@ -314,6 +315,7 @@
   <object id="202" gid="158" x="1731" y="896" width="86" height="60"/>
   <object id="203" gid="158" x="2065" y="400" width="86" height="60"/>
   <object id="204" gid="158" x="2049" y="424" width="86" height="60"/>
+
  </objectgroup>
  <objectgroup id="16" name="Object">
   <object id="205" gid="141" x="74" y="596" width="128" height="192"/>
@@ -516,4 +518,13 @@
   <object id="352" x="-8" y="1144" width="22.6667" height="197.333"/>
   <object id="353" x="453.333" y="830.667" width="122.667" height="50.6667"/>
  </objectgroup>
+ <objectgroup id="19" name="Position">
+  <object id="21" name="Player" x="37.3577" y="1267.67">
+   <properties>
+    <property name="pos" value="start"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="21" name="Foam"/>
 </map>
