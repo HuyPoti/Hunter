@@ -50,6 +50,8 @@ def import_all_characters(*path):
 def check_connection(radius, entity, target, tolerance = 30):
     relation = vector(target.rect.center) - vector(entity.rect.center)
     if relation.length() < radius:
-        if entity.facing_direction == 'stand_left' and relation.x < 0 and abs(relation.y) < tolerance or \
-            entity.facing_direction == 'stand_right' and relation.x > 0 and abs(relation.y) < tolerance:
-            return True
+        if  entity.facing_direction == 'stand_left' and relation.x < 0 and abs(relation.y) < tolerance or \
+            entity.facing_direction == 'stand_right' and relation.x > 0 and abs(relation.y) < tolerance or \
+            entity.facing_direction == 'stand_up' and relation.y < 0 and abs(relation.x) < tolerance or \
+            entity.facing_direction == 'stand_down' and relation.y > 0 and abs(relation.x) < tolerance:
+                return True

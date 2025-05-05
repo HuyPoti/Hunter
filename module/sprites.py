@@ -37,12 +37,14 @@ class BothSprite(Animation, CollidableSprite):
         CollidableSprite.__init__(self, pos, frames[0], groups)
         self.z = z
 class Arrow(pygame.sprite.Sprite):
-    def __init__(self, surf, pos, direction, groups):
+    def __init__(self, surf, pos, direction, groups, z = WORLD_LAYERS['main']):
         super().__init__(groups)
         self.image = surf
         self.rect = self.image.get_rect(center=pos)
-        self.direction = direction.normalize()  # Hướng di chuyển
-        self.speed = speed
+        self.z = z
+        self.y_sort = self.rect.centery
+        self.direction = direction
+        self.speed = 1000
         self.lifetime = 2000  # Thời gian tồn tại của mũi tên (ms)
         self.spawn_time = pygame.time.get_ticks()
 
@@ -51,6 +53,11 @@ class Arrow(pygame.sprite.Sprite):
         self.rect.centerx += self.direction.x * self.speed * dt
         self.rect.centery += self.direction.y * self.speed * dt
 
-        # Kiểm tra thời gian tồn tại
+    #     # Kiểm tra thời gian tồn tại
         if pygame.time.get_ticks() - self.spawn_time > self.lifetime:
             self.kill()
+class TransitionSprite(Sprite):
+    def __init__(self, pos, size, target, groups):
+        surf = pygame.Surface(size)
+        super().__init__(pos, surf, groups)
+        self.target = target

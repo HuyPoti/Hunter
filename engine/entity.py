@@ -1,4 +1,6 @@
 from utils.settings import *
+from utils.support import *
+from module.sprites import Arrow
 
 class Entity(pygame.sprite.Sprite):
     def __init__(self, pos, frames, groups, facing_direction):
@@ -18,6 +20,8 @@ class Entity(pygame.sprite.Sprite):
         relation = vector(target_pos) - vector(self.rect.center)
         if abs(relation.y) < 30:
             self.facing_direction = 'stand_right' if relation.x > 0 else 'stand_left'
+        else:
+            self.facing_direction = 'stand_down' if relation.y > 0 else 'stand_up'
     def block(self):
         self.blocked = True
         self.direction = vector(0,0)
@@ -38,7 +42,6 @@ class Character(Entity):
     def get_dialog(self):
         return self.character_data['dialog']['default']
     def get_state(self):
-
         return f"{self.facing_direction}"
     def animate(self, dt):
         self.frames_index += ANIMATION_SPEED * dt
@@ -49,7 +52,8 @@ class Player(Entity):
     def __init__(self, pos, frames, groups, facing_direction, collision_sprites):
         super().__init__(pos, frames ,groups, facing_direction)
         self.collision_sprites = collision_sprites
-
+        self.all_sprites = groups[0]
+        self.arrow_sprites = groups[1]
         self.mode = 'warrior'
         self.damage = {
             'archer' : 10,
@@ -93,37 +97,40 @@ class Player(Entity):
         self.frames_index = 0
         self.image = self.frames[self.mode][self.get_state()][self.frames_index]
     def attack(self, keys):
-        current_time = pygame.time.get_ticks()
-        if current_time - self.last_attack_time < self.attack_cooldown:
-            return
-        if keys[pygame.K_UP]:
-            self.perform_attack('attack_up')
-        elif keys[pygame.K_DOWN]:
-            self.perform_attack('attack_down')
-        elif keys[pygame.K_LEFT]:
-            self.perform_attack('attack_left')
-        elif keys[pygame.K_RIGHT]:
-            self.perform_attack('attack_right')
-        else:
-            # Nếu không nhấn phím mũi tên, tấn công theo hướng đang đứng
-            if self.facing_direction == 'stand_right':
-                self.perform_attack('attack_right')
-            elif self.facing_direction == 'stand_left':
-                self.perform_attack('attack_left')
-            elif self.facing_direction == 'stand_up':
+        if not self.attacking:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.last_attack_time < self.attack_cooldown:
+                return
+            self.attacking = True
+            if keys[pygame.K_UP]:
                 self.perform_attack('attack_up')
-            elif self.facing_direction == 'stand_down':
+            elif keys[pygame.K_DOWN]:
                 self.perform_attack('attack_down')
-        self.last_attack_time = current_time
+            elif keys[pygame.K_LEFT]:
+                self.perform_attack('attack_left')
+            elif keys[pygame.K_RIGHT]:
+                self.perform_attack('attack_right')
+            else:
+                # Nếu không nhấn phím mũi tên, tấn công theo hướng đang đứng
+                if self.facing_direction == 'stand_right':
+                    self.perform_attack('attack_right')
+                elif self.facing_direction == 'stand_left':
+                    self.perform_attack('attack_left')
+                elif self.facing_direction == 'stand_up':
+                    self.perform_attack('attack_up')
+                elif self.facing_direction == 'stand_down':
+                    self.perform_attack('attack_down')
+            self.last_attack_time = current_time
     def perform_attack(self, attack_type):
         self.block()
-        self.attacking = True
         self.frames_index = 0
         self.attack_type = attack_type
+        self.original_rect = self.rect.copy()
+        if attack_type == 'attack_up':
+            self.rect.x -= 20
         self.image = self.frames[self.mode][attack_type][self.frames_index]
-
         if self.mode == 'warrior':
-        # Tạo vùng sát thương cho warrior
+            # Tạo vùng sát thương cho warrior
             if attack_type == 'attack_left':
                 self.attack_hitbox = pygame.Rect(self.rect.left - 50, self.rect.top, 50, self.rect.height)
             elif attack_type == 'attack_right':
@@ -132,7 +139,32 @@ class Player(Entity):
                 self.attack_hitbox = pygame.Rect(self.rect.left, self.rect.top - 50, self.rect.width, 50)
             elif attack_type == 'attack_down':
                 self.attack_hitbox = pygame.Rect(self.rect.left, self.rect.bottom, self.rect.width, 50)
-            
+        elif self.mode == 'archer':
+            # Tạo mũi tên
+            direction = vector(0, 0)
+            angle = 0  # Góc xoay của mũi tên
+            if attack_type == 'attack_left':
+                direction = vector(-1, 0)
+                angle = 180
+            elif attack_type == 'attack_right':
+                direction = vector(1, 0)
+                angle = 0
+            elif attack_type == 'attack_up':
+                direction = vector(0, -1)
+                angle = 90
+            elif attack_type == 'attack_down':
+                direction = vector(0, 1)
+                angle = -90
+
+            # Xoay hình ảnh mũi tên
+            self.arrow_surf = import_image(join('animation', 'resource', 'arrow'))
+            rotated_arrow = pygame.transform.rotate(self.arrow_surf, angle)
+
+            # Vị trí bắt đầu của mũi tên
+            pos = self.rect.center + direction * 50
+
+            # Tạo mũi tên
+            Arrow(rotated_arrow, pos, direction, (self.all_sprites, self.arrow_sprites))
     def move(self, dt):
         self.rect.centerx += self.direction.x * self.speed * dt
         self.hitbox.centerx = self.rect.centerx
@@ -190,6 +222,8 @@ class Player(Entity):
                 self.attacking = False
                 self.frames_index = 0
                 self.image = self.frames[self.mode][self.get_state()][self.frames_index]
+                if hasattr(self, 'original_rect'):
+                    self.rect = self.original_rect
             else:
                 # Hiển thị khung hình tiếp theo của hoạt ảnh tấn công
                 self.image = self.frames[self.mode][self.attack_type][int(self.frames_index)]
