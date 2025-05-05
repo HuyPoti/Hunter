@@ -1,5 +1,6 @@
 from utils.settings import *
-from module.sprites import Sprite, Animation, BorderSprite, CollidableSprite, BothSprite
+
+from module.sprites import Sprite, Animation, BorderSprite, CollidableSprite, BothSprite, TransitionSprite
 from module.monster import Monster, MonsterHouse, tnt
 from engine.entity import Player, Character, Arrow, Coin, Meat, Portal
 from engine.groups import AllSprites
@@ -12,6 +13,20 @@ class Level:
     def __init__(self, tmx_maps):
         self.display_surface = pygame.display.get_surface()
         self.tmx_maps = tmx_maps
+# <<<<<<< GiaHuy
+#         self.all_sprites = AllSprites()
+#         self.collision_sprites = pygame.sprite.Group()
+#         self.character_sprites = pygame.sprite.Group()
+#         self.arrow_sprites = pygame.sprite.Group()  # Nhóm để chứa các mũi tên (projectiles)
+#         self.transition_sprites = pygame.sprite.Group()
+
+#         self.transition_target = None
+#         self.tint_surf = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
+#         self.tint_mode = 'untint'
+#         self.tint_progress = 0
+#         self.tint_direction = -1
+#         self.tint_speed = 600
+# =======
         self.current_map = 1
         self.all_sprites = AllSprites()
         self.collision_sprites = pygame.sprite.Group()
@@ -73,7 +88,7 @@ class Level:
             Sprite((x*TILE_SIZE, y*TILE_SIZE), surf, self.all_sprites, WORLD_LAYERS['bg'])
         
         for obj in tmx_map.get_layer_by_name('Rock'):
-            Animation((obj.x, obj.y) , self.overworld_frames['rock'], self.all_sprites, WORLD_LAYERS['main'])
+            Animation((obj.x, obj.y) , self.overworld_frames['rock'], self.all_sprites, WORLD_LAYERS['bg'])
         
         for x, y, surf in tmx_map.get_layer_by_name('Elevation').tiles():
             Sprite((x*TILE_SIZE, y*TILE_SIZE), surf, (self.all_sprites, self.collision_sprites), WORLD_LAYERS['main'])
@@ -89,13 +104,14 @@ class Level:
 
         for obj in tmx_map.get_layer_by_name('Collision'):
             BorderSprite((obj.x, obj.y),  pygame.Surface((int(obj.width), int(obj.height))), self.collision_sprites)
-        
+        for obj in tmx_map.get_layer_by_name('Transition'):
+            TransitionSprite((obj.x, obj.y), (obj.width, obj.height), (obj.properties['target'], obj.properties['pos']),self.transition_sprites)
         for obj in tmx_map.get_layer_by_name('Position'):
             if obj.name == 'Player' and 'pos' in obj.properties and obj.properties['pos'] == player_start_pos:
                 self.player = Player(
                     (obj.x, obj.y), 
                     self.overworld_frames['character'], 
-                    self.all_sprites,
+                    (self.all_sprites, self.arrow_sprites),
                     'stand_right', 
                     self.collision_sprites)
                 
@@ -183,6 +199,31 @@ class Level:
     def end_dialog(self, character):
         self.dialog_tree = None
         self.player.unblock()
+# <<<<<<< GiaHuy
+#     def transition_check(self):
+#         sprites = [sprite for sprite in self.transition_sprites if sprite.rect.colliderect(self.player.hitbox)]
+#         if sprites:
+#             self.player.block()
+#             self.transition_target = sprites[0].target
+#             self.tint_mode = 'tint'
+#     def tint_screen(self, dt):
+#         if self.tint_mode == 'untint':
+#             self.tint_progress -= self.tint_speed * dt
+            
+#         if self.tint_mode == 'tint':
+#             self.tint_progress += self.tint_speed * dt
+#             if self.tint_progress >= 255:
+#                 self.setup(self.tmx_maps[self.transition_target[0]], self.transition_target[1])
+#                 self.tint_mode = 'untint'
+#                 self.transition_target = None
+#         self.tint_progress = max(0, min(self.tint_progress, 255))
+#         self.tint_surf.set_alpha(self.tint_progress)
+#         self.display_surface.blit(self.tint_surf, (0, 0))
+#         print(self.tint_progress)
+#     def run(self, dt):
+#         self.display_surface.fill('black')
+
+# =======
 
     def display_hp(self): # Hiển thị HP và Damage
         hp_text = self.fonts['dialog'].render(f"HP: {self.player.hp}", True, (0, 128, 0))
@@ -238,4 +279,13 @@ class Level:
         self.all_sprites.draw(self.player.rect.center)
         self.display_hp()
         self.input()
+        self.transition_check()
+        self.all_sprites.update(dt)
+
+        self.all_sprites.draw(self.player.rect.center)
+        # self.player.check_attack_collisions(self.character_sprites
+        # self.arrow_sprites.update(dt)
+        # self.arrow_sprites.draw(self.display_surface)
         if self.dialog_tree: self.dialog_tree.update()
+
+        self.tint_screen(dt)
