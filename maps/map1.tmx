@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="24" nextobjectid="318">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="24" nextobjectid="321">
  <tileset firstgid="1" source="../assets/tilesets/Flat.tsx"/>
  <tileset firstgid="41" source="../assets/tilesets/Water.tsx"/>
  <tileset firstgid="42" source="../assets/tilesets/Foam.tsx"/>
@@ -150,14 +149,6 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="24" name="Transition">
-  <object id="314" x="2381.5" y="695" width="53.5" height="8.5">
-   <properties>
-    <property name="pos" value="map1"/>
-    <property name="target" value="map2"/>
-   </properties>
-  </object>
- </objectgroup>
  <layer id="5" name="Grass" width="40" height="25">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -259,6 +250,7 @@
   <object id="140" name="House" type="Building" gid="52" x="2434.43" y="558.668" width="128" height="192"/>
   <object id="141" name="Destruct" gid="60" x="569.515" y="685.88" width="128" height="220"/>
   <object id="142" name="Tree" gid="69" x="1886" y="977" width="112" height="173"/>
+  <object id="318" name="Building" type="Building" gid="2147483694" x="2245.33" y="741.333" width="320" height="256"/>
  </objectgroup>
  <objectgroup id="18" name="Position">
   <object id="101" name="Player" x="96" y="736">
@@ -318,16 +310,11 @@
   <object id="316" name="Coin" x="1608.87" y="580.29">
    <point/>
   </object>
-  <object id="238" name="MonsterHouse" gid="2147483770" x="1269.94" y="900.606" width="128" height="192">
+  <object id="320" name="MonsterHouse" gid="122" x="1264" y="876" width="128" height="192">
    <properties>
     <property name="hp" type="int" value="500"/>
     <property name="monster_type" value="Torch"/>
     <property name="spawn_rate" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="131" name="Portal" type="Building" gid="2147483694" x="2248.49" y="723.154" width="320" height="256">
-   <properties>
-    <property name="target_map" type="int" value="2"/>
    </properties>
   </object>
  </objectgroup>
@@ -345,7 +332,7 @@
   <object id="254" x="2051.33" y="384.667" width="507.333" height="61.3333"/>
   <object id="255" x="2002.67" y="598" width="72" height="38.6667"/>
   <object id="256" x="2114.67" y="603.333" width="74.6667" height="35.3333"/>
-  <object id="257" x="2282.67" y="546.933" width="250.667" height="79.3333"/>
+  <object id="257" x="2365.34" y="658.933" width="74.667" height="48.6666"/>
   <object id="258" x="2358" y="484" width="71.3333" height="34.6667"/>
   <object id="259" x="2466.67" y="492.667" width="63.3333" height="29.3333"/>
   <object id="260" x="2002" y="794.667" width="70" height="32"/>
@@ -354,7 +341,7 @@
   <object id="264" x="2180.67" y="1063.33" width="374.667" height="87.3333"/>
   <object id="265" x="1521.33" y="473.333" width="71.3333" height="46"/>
   <object id="266" x="1630" y="492" width="72.6667" height="31.3333"/>
-  <object id="267" x="1300.67" y="812" width="76" height="52"/>
+  <object id="267" x="1306.67" y="746" width="58" height="34"/>
   <object id="268" x="599.333" y="604" width="73.3333" height="57.3333"/>
   <object id="272" x="1154" y="616" width="62" height="44"/>
   <object id="279" x="8" y="876" width="1784" height="14"/>
@@ -372,5 +359,12 @@
   <object id="292" x="2438" y="1322" width="128" height="10"/>
   <object id="293" x="0" y="502" width="16" height="380"/>
   <object id="294" x="2552" y="392" width="10" height="946"/>
+ </objectgroup>
+ <objectgroup id="24" name="Transition">
+  <object id="314" x="2380.17" y="719" width="53.5" height="8.5">
+   <properties>
+    <property name="target" value="map2"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

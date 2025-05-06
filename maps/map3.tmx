@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="19" nextobjectid="223">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="20" nextobjectid="236">
  <tileset firstgid="1" source="../assets/tilesets/Flat.tsx"/>
  <tileset firstgid="41" source="../assets/tilesets/Tree.tsx"/>
  <tileset firstgid="47" source="../assets/tilesets/Elevation.tsx"/>
@@ -71,7 +71,7 @@
   <object id="53" gid="133" x="1135.76" y="78.3636" width="80" height="83"/>
   <object id="54" gid="133" x="1193.33" y="135.939" width="80" height="83"/>
  </objectgroup>
- <layer id="12" name="Flat_Beach" width="40" height="25" visible="0">
+ <layer id="12" name="Flat_Beach" width="40" height="25">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -158,7 +158,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,54,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="14" name="Rock" visible="0">
+ <objectgroup id="14" name="Rock">
   <object id="55" gid="141" x="1138.82" y="339.091" width="86" height="60"/>
   <object id="56" gid="141" x="1187.3" y="366.364" width="86" height="60"/>
   <object id="57" gid="141" x="1114.58" y="196.667" width="86" height="60"/>
@@ -218,11 +218,7 @@
   <object id="111" name="Tree" gid="46" x="1922" y="769" width="112" height="173"/>
   <object id="112" name="Tree" gid="46" x="1984" y="707" width="112" height="173"/>
   <object id="113" name="Tree" gid="46" x="2046" y="709" width="112" height="173"/>
-  <object id="114" gid="121" x="915.212" y="557.333" width="128" height="192"/>
-  <object id="115" gid="121" x="2318" y="1610" width="128" height="192"/>
   <object id="116" gid="123" x="1616" y="1264" width="132" height="156"/>
-  <object id="117" gid="121" x="95.2121" y="182.424" width="128" height="192"/>
-  <object id="118" gid="121" x="84" y="1612" width="128" height="192"/>
   <object id="120" gid="115" x="250" y="688" width="128" height="256"/>
   <object id="121" gid="87" x="384" y="1470" width="64" height="64"/>
   <object id="122" gid="87" x="318" y="1214" width="64" height="64"/>
@@ -314,6 +310,34 @@
    </properties>
    <point/>
   </object>
+  <object id="232" name="MonsterHouse" gid="121" x="84.4848" y="1597.94" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="233" name="MonsterHouse" gid="121" x="102.667" y="194.909" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="234" name="MonsterHouse" gid="121" x="911.758" y="555.515" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="235" name="MonsterHouse" gid="121" x="2332.97" y="1582.79" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="18" name="Collision">
   <object id="165" x="-6.06061" y="6.06061" width="33.3333" height="584.848"/>
@@ -366,5 +390,12 @@
   <object id="220" x="2539.39" y="663.636" width="33.3333" height="281.818"/>
   <object id="221" x="-6.06061" y="581.818" width="33.3333" height="1027.27"/>
   <object id="222" x="0" y="1566.67" width="1293.94" height="36.3636"/>
+ </objectgroup>
+ <objectgroup id="19" name="Transition">
+  <object id="223" x="2378.79" y="154.545" width="48.4848" height="21.2121">
+   <properties>
+    <property name="target" value="map4"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

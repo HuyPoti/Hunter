@@ -14,15 +14,14 @@ class Game:
         pygame.display.set_icon(pygame.image.load(join('.', 'assets', 'icon.png')))
         self.import_assets()
         self.level = Level(self.tmx_maps)
-        #self.current_stage = Level(self.tmx_maps[1])
         self.clock = pygame.time.Clock()
     def import_assets(self):  
         self.tmx_maps = {
-            1: load_pygame(join('.', 'maps', 'map1.tmx')),
-            2: load_pygame(join('.', 'maps', 'map2.tmx')),
-            3: load_pygame(join('.', 'maps', 'map3.tmx')),
-            4: load_pygame(join('.', 'maps', 'map4.tmx')),
-            5: load_pygame(join('.', 'maps', 'map5.tmx'))
+            'map1': load_pygame(join('.', 'maps', 'map1.tmx')),
+            'map2': load_pygame(join('.', 'maps', 'map2.tmx')),
+            'map3': load_pygame(join('.', 'maps', 'map3.tmx')),
+            'map4': load_pygame(join('.', 'maps', 'map4.tmx')),
+            'map5': load_pygame(join('.', 'maps', 'map5.tmx'))
             }
 
     def run(self):

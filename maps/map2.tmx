@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="19" nextobjectid="356">
-
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="20" nextobjectid="363">
  <tileset firstgid="1" source="../assets/tilesets/Water.tsx"/>
  <tileset firstgid="2" source="../assets/tilesets/Elevation.tsx"/>
  <tileset firstgid="34" source="../assets/tilesets/Bridge_All.tsx"/>
@@ -315,11 +314,8 @@
   <object id="202" gid="158" x="1731" y="896" width="86" height="60"/>
   <object id="203" gid="158" x="2065" y="400" width="86" height="60"/>
   <object id="204" gid="158" x="2049" y="424" width="86" height="60"/>
-
  </objectgroup>
  <objectgroup id="16" name="Object">
-  <object id="205" gid="141" x="74" y="596" width="128" height="192"/>
-  <object id="206" gid="141" x="1390" y="1488" width="128" height="192"/>
   <object id="207" gid="143" x="500" y="358" width="132" height="156"/>
   <object id="208" gid="129" x="102" y="1228" width="128" height="192"/>
   <object id="210" gid="131" x="1920" y="1138" width="128" height="192"/>
@@ -367,7 +363,7 @@
   <object id="355" gid="123" x="2272" y="326" width="320" height="256"/>
  </objectgroup>
  <objectgroup id="18" name="Position">
-  <object id="345" name="Player" x="38" y="1278">
+  <object id="345" name="Player" x="64" y="1276">
    <properties>
     <property name="pos" value="start"/>
    </properties>
@@ -417,6 +413,20 @@
     <property name="graphic" value="friend"/>
    </properties>
    <point/>
+  </object>
+  <object id="361" name="MonsterHouse" gid="141" x="111.758" y="525.212" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="362" name="MonsterHouse" gid="141" x="1402.67" y="1422.18" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="12" name="Effect">
@@ -518,13 +528,12 @@
   <object id="352" x="-8" y="1144" width="22.6667" height="197.333"/>
   <object id="353" x="453.333" y="830.667" width="122.667" height="50.6667"/>
  </objectgroup>
- <objectgroup id="19" name="Position">
-  <object id="21" name="Player" x="37.3577" y="1267.67">
+ <objectgroup id="21" name="Foam"/>
+ <objectgroup id="19" name="Transition">
+  <object id="356" x="2394" y="300" width="66" height="14">
    <properties>
-    <property name="pos" value="start"/>
+    <property name="target" value="map3"/>
    </properties>
-   <point/>
   </object>
  </objectgroup>
- <objectgroup id="21" name="Foam"/>
 </map>
