@@ -1,4 +1,5 @@
 from utils.settings import *
+from module.sprites import *
 
 
 class Entity(pygame.sprite.Sprite):
@@ -48,13 +49,10 @@ class Character(Entity):
     def update(self, dt):
         self.animate(dt)
 
-class Arrow(BothSprite):
-    def __init__(self, pos, direction, groups, z=WORLD_LAYERS['main']):
-        frames = [pygame.image.load(join('animation', 'resource', 'arrow.png')).convert_alpha()]
-        super().__init__(pos, frames, groups, z)
-        
-        self.frames = frames
-        self.frames_index = 0
+class Arrow(Sprite):
+    def __init__(self, surf, pos, direction, groups, z=WORLD_LAYERS['main']):
+        super().__init__(pos, surf, groups, z)
+        self.image = surf
         self.direction = direction
         self.speed = 400
         self.damage = 10
@@ -62,14 +60,12 @@ class Arrow(BothSprite):
         self.creation_time = pygame.time.get_ticks() / 1000
         self.exploded = False
         self.rect = self.image.get_frect(center=pos)
-        self.hitbox = self.rect.copy().inflate(-8, -8)
-        print(f"Tạo Arrow tại {pos}, hướng {self.direction}")
+        self.hitbox = self.rect.copy().inflate(8, 8)
 
     def update(self, dt, monsters):
         if self.exploded:
             return
 
-        self.image = self.frames[0]
 
         self.rect.x += self.direction.x * self.speed * dt
         self.rect.y += self.direction.y * self.speed * dt
@@ -78,17 +74,14 @@ class Arrow(BothSprite):
         for monster in monsters:
             if self.hitbox.colliderect(monster.hitbox):
                 monster.hp -= self.damage
-                print(f"Mũi tên trúng {monster.name}! HP còn lại: {monster.hp}")
                 if monster.hp <= 0:
                     monster.kill()
-                    print(f"Đã tiêu diệt {monster.name}!")
                 self.exploded = True
                 self.kill()
                 break
 
         current_time = pygame.time.get_ticks() / 1000
         if current_time - self.creation_time >= self.lifetime:
-            print(f"Mũi tên hết thời gian tại {self.rect.center}")
             self.exploded = True
             self.kill()
 
@@ -98,7 +91,7 @@ class Coin(BothSprite):
         super().__init__(pos, frame, groups, z)
         
         self.frames = frame
-        self.frames_index = 0
+        # self.frames_index = 0
         self.rect = self.image.get_frect(center=pos)
         self.hitbox = self.rect.copy().inflate(-8, -8)
         self.value = 1
@@ -107,61 +100,41 @@ class Coin(BothSprite):
     def update(self, dt, player):
         self.image = self.frames[0]
         if self.hitbox.colliderect(player.hitbox):
-            player.damage += self.value
+            player.damage_origin += self.value
             print(f"Nhặt Coin! Damage người chơi: {player.damage}")
             self.kill()
 
 class Meat(BothSprite):
-    def __init__(self, pos, groups, z=WORLD_LAYERS['main']):
-        frame = [pygame.image.load(join('animation', 'meat', 'frame_6_delay-0.08s.png')).convert_alpha()]
+    def __init__(self, pos, frame, groups, z=WORLD_LAYERS['main']):
         super().__init__(pos, frame, groups, z)
         
-        self.frames = frame
-        self.frames_index = 0
         self.rect = self.image.get_frect(center=pos)
         self.hitbox = self.rect.copy().inflate(-8, -8)
         self.value = 10
         print(f"Tạo Meat tại {pos}")
 
     def update(self, dt, player):
-        self.image = self.frames[0]
+        self.animate(dt)
         if self.hitbox.colliderect(player.hitbox):
             player.hp += self.value
             print(f"Nhặt Meat! HP người chơi: {player.hp}")
             self.kill()
 
-class Portal(BothSprite):
-    def __init__(self, pos, groups, target_map, z=WORLD_LAYERS['main']):
-        frame = [pygame.image.load(join('animation', 'resource', 'tree', '1.png')).convert_alpha()]
-        super().__init__(pos, frame, groups, z)
-        
-        self.frames = frame
-        self.frames_index = 0
-        self.rect = self.image.get_frect(center=pos)
-        self.hitbox = self.rect.copy().inflate(-16, -16)
-        self.target_map = int(target_map)
-        print(f"Tạo Portal tại {pos}, dẫn đến {target_map}")
-
-    def update(self, dt, player, change_map_callback):
-        self.image = self.frames[0]
-        if self.hitbox.colliderect(player.hitbox):
-            print(f"Chuyển sang map {self.target_map}")
-            change_map_callback(self.target_map)
-            self.kill()
 
 class Player(Entity):
     def __init__(self, pos, frames, groups, facing_direction, collision_sprites):
         super().__init__(pos, frames ,groups, facing_direction)
         self.hp = 200
         self.collision_sprites = collision_sprites
-        self.all_sprites = groups[0]
-        self.arrow_sprites = groups[1]
         self.mode = 'warrior'
-        self.damage = 20
+        self.speed = 200
+        self.damage = 50
+        self.damage_origin = 50
         #attack
         self.attack_cooldown = 500
         self.attacking = False
         self.last_attack_time = 0
+        self.attack_type = None
         self.frames_index, self.frames = 0, frames
         self.image = self.frames[self.mode][self.get_state()][self.frames_index]
         #setup
@@ -189,12 +162,12 @@ class Player(Entity):
     def switch_mode(self):
         if self.mode == 'archer':
             self.mode = 'warrior'
+            self.damage = self.damage_origin
             self.speed = 200
-            self.damage = 20
         else:
             self.mode = 'archer'
             self.speed = 250
-            self.damage = 10
+            self.damage = self.damage_origin - 10
         self.frames_index = 0
         self.image = self.frames[self.mode][self.get_state()][self.frames_index]
     def attack(self, keys):
@@ -233,14 +206,38 @@ class Player(Entity):
         if self.mode == 'warrior':
             # Tạo vùng sát thương cho warrior
             if attack_type == 'attack_left':
-                self.attack_hitbox = pygame.Rect(self.rect.left - 50, self.rect.top, 50, self.rect.height)
+                self.hitbox = pygame.Rect(self.rect.left - 50, self.rect.top, self.rect.width + 50, self.rect.height)
             elif attack_type == 'attack_right':
-                self.attack_hitbox = pygame.Rect(self.rect.right, self.rect.top, 50, self.rect.height)
+                self.attack_hitbox = pygame.Rect(self.rect.right + 50, self.rect.top, self.rect.width + 50, self.rect.height)
             elif attack_type == 'attack_up':
-                self.attack_hitbox = pygame.Rect(self.rect.left, self.rect.top - 50, self.rect.width, 50)
+                self.attack_hitbox = pygame.Rect(self.rect.left, self.rect.top, self.rect.width, self.rect.width + 50)
             elif attack_type == 'attack_down':
-                self.attack_hitbox = pygame.Rect(self.rect.left, self.rect.bottom, self.rect.width, 50)
+                self.attack_hitbox = pygame.Rect(self.rect.left, self.rect.top , self.rect.width, self.rect.height + 50)
+        else:
+            # Tạo mũi tên cho archer
+            direction = vector(0, 0)
+            angle = 0  # Góc xoay của mũi tên
+            if attack_type == 'attack_left':
+                direction = vector(-1, 0)
+                angle = 180
+            elif attack_type == 'attack_right':
+                direction = vector(1, 0)
+                angle = 0
+            elif attack_type == 'attack_up':
+                direction = vector(0, -1)
+                angle = 90
+            elif attack_type == 'attack_down':
+                direction = vector(0, 1)
+                angle = -90
 
+            # Xoay hình ảnh mũi tên
+            self.arrow_surf = import_image(join('animation', 'resource', 'arrow'))
+            rotated_arrow = pygame.transform.rotate(self.arrow_surf, angle)
+
+            # Vị trí bắt đầu của mũi tên
+            pos = self.rect.center + direction * 50
+            Arrow(rotated_arrow, pos, direction, self.groups() + [self.collision_sprites])
+            
     def move(self, dt):
         self.rect.centerx += self.direction.x * self.speed * dt
         self.hitbox.centerx = self.rect.centerx
@@ -291,7 +288,7 @@ class Player(Entity):
     def animate(self, dt):
         if self.attacking:
             # Hoạt ảnh tấn công
-            self.frames_index += ANIMATION_SPEED * dt
+            self.frames_index += (self.speed / 10) * dt
             if self.frames_index >= len(self.frames[self.mode][self.attack_type]):
                 # Kết thúc hoạt ảnh tấn công
                 self.unblock()

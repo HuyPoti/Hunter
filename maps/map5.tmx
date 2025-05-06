@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="17" nextobjectid="563">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="18" nextobjectid="592">
  <tileset firstgid="1" source="../assets/tilesets/Water.tsx"/>
  <tileset firstgid="2" source="../assets/tilesets/Flat.tsx"/>
  <tileset firstgid="42" source="../assets/tilesets/Building_Monster.tsx"/>
@@ -512,22 +512,6 @@
   <object id="425" gid="61" x="2250.94" y="326.97" width="86" height="60"/>
  </objectgroup>
  <objectgroup id="15" name="Object">
-  <object id="426" gid="42" x="923.879" y="1268.73" width="128" height="192"/>
-  <object id="427" gid="42" x="929.939" y="959.636" width="128" height="192"/>
-  <object id="428" gid="42" x="923.879" y="508.121" width="128" height="192"/>
-  <object id="429" gid="42" x="539.03" y="517.212" width="128" height="192"/>
-  <object id="430" gid="42" x="548.121" y="905.091" width="128" height="192"/>
-  <object id="431" gid="42" x="84.4848" y="1053.58" width="128" height="192"/>
-  <object id="432" gid="42" x="99.6364" y="635.394" width="128" height="192"/>
-  <object id="433" gid="42" x="1375.39" y="1196" width="128" height="192"/>
-  <object id="434" gid="42" x="1369.33" y="708.121" width="128" height="192"/>
-  <object id="435" gid="42" x="1817.82" y="1059.64" width="128" height="192"/>
-  <object id="436" gid="42" x="1820.85" y="768.727" width="128" height="192"/>
-  <object id="437" gid="42" x="1823.88" y="380.848" width="128" height="192"/>
-  <object id="438" gid="42" x="2275.39" y="726.303" width="128" height="192"/>
-  <object id="439" gid="42" x="2293.58" y="1211.15" width="128" height="192"/>
-  <object id="440" gid="75" x="637.697" y="1404.73" width="64" height="64"/>
-  <object id="441" gid="75" x="701.333" y="1213.82" width="64" height="64"/>
   <object id="442" gid="75" x="55.8788" y="319.879" width="64" height="64"/>
   <object id="443" gid="76" x="2361.94" y="1410.79" width="64" height="64"/>
   <object id="444" gid="76" x="2364.97" y="386.545" width="64" height="64"/>
@@ -589,6 +573,104 @@
     <property name="graphic" value="friend"/>
    </properties>
    <point/>
+  </object>
+  <object id="578" name="MonsterHouse" gid="42" x="102.667" y="1025.21" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="579" name="MonsterHouse" gid="42" x="102.667" y="637.333" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="580" name="MonsterHouse" gid="42" x="572.364" y="410.061" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="581" name="MonsterHouse" gid="42" x="563.273" y="913.091" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="582" name="MonsterHouse" gid="42" x="923.879" y="416.121" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="583" name="MonsterHouse" gid="42" x="923.879" y="861.576" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="584" name="MonsterHouse" gid="42" x="1390.55" y="600.97" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="585" name="MonsterHouse" gid="42" x="1396.61" y="1043.39" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="586" name="MonsterHouse" gid="42" x="945.091" y="1231.27" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="587" name="MonsterHouse" gid="42" x="1826.91" y="1049.45" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="588" name="MonsterHouse" gid="42" x="2281.45" y="1100.97" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="589" name="MonsterHouse" gid="42" x="2281.45" y="722.182" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="590" name="MonsterHouse" gid="42" x="1823.88" y="600.97" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="591" name="MonsterHouse" gid="42" x="1802.67" y="240.364" width="128" height="192">
+   <properties>
+    <property name="hp" type="int" value="500"/>
+    <property name="monster_type" value="Torch"/>
+    <property name="spawn_rate" type="int" value="2"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="16" name="Effect"/>
@@ -688,4 +770,5 @@
   <object id="561" x="1975.76" y="560.606" width="69.697" height="27.2727"/>
   <object id="562" x="1275.76" y="1009.09" width="63.6364" height="36.3636"/>
  </objectgroup>
+ <objectgroup id="17" name="Transition"/>
 </map>

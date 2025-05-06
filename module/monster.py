@@ -1,9 +1,10 @@
 import pygame
 import math
-from module.sprites import BothSprite
+from module.sprites import CollidableSprite, BothSprite
 from utils.support import import_folder
 from utils.settings import WORLD_LAYERS
 from os.path import join
+from utils.support import *
 
 class Monster(BothSprite):
     def __init__(self, pos, obj, groups, z=WORLD_LAYERS['main']):
@@ -28,17 +29,17 @@ class Monster(BothSprite):
         self.frames = frames
         
         try:
-            self.hp = int(obj.properties.get('hp', 100))
+            self.hp = obj.properties.get['hp']
         except (ValueError, TypeError) as e:
             self.hp = 100
             
         try:
-            self.speed = float(obj.properties.get('speed', 200.0))
+            self.speed = float(obj.properties.get['speed'])
         except (ValueError, TypeError) as e:
-            self.speed = 200.0
+            self.speed = 100.0
             
         try:
-            self.damage = int(obj.properties.get('damage', 10))
+            self.damage = int(obj.properties.get['damage'])
         except (ValueError, TypeError) as e:
             self.damage = 10
 
@@ -49,7 +50,7 @@ class Monster(BothSprite):
         self.frames_index = 0
 
     def animate(self, dt):
-        self.frames_index += 3 * dt  # Tốc độ animation, có thể điều chỉnh
+        self.frames_index += (ANIMATION_SPEED / 2) * dt  # Tốc độ animation, có thể điều chỉnh
         if self.frames_index >= len(self.frames[self.state]):
             self.frames_index = 0 
         self.image = self.frames[self.state][int(self.frames_index)]
@@ -115,6 +116,9 @@ class Monster(BothSprite):
                 else:
                     self.state = 'stand_right' if dy > 0 else 'stand_left'
             else:
+                if distance>200:
+                    self.pos[0] += self.speed * self.direction.x * dt
+                    self.pos[1] += self.speed * self.direction.y * dt
                 self.is_attacking = True
                 if abs(dx) > abs(dy):
                     self.state = 'attack_right' if dx >= 0 else 'attack_left'
@@ -134,8 +138,22 @@ class Monster(BothSprite):
 
         self.image = self.frames[self.state][int(self.frames_index % len(self.frames[self.state]))]
 
-        self.rect = self.image.get_frect(topleft=self.pos)
-        self.hitbox = self.rect.copy().inflate(-20, -self.rect.height * 0.6)
+        self.rect = self.image.get_frect(center = self.pos)
+        self.hitbox = self.rect.copy(). inflate(-10, -10)
+        if self.hitbox.colliderect(player.hitbox):
+            if self.direction!=0:
+                if self.direction.x > 0:  # Quái vật di chuyển sang phải
+                    self.hitbox.right = player.hitbox.left
+                elif self.direction.x < 0:  # Quái vật di chuyển sang trái
+                    self.hitbox.left = player.hitbox.right
+                self.rect.centerx = self.hitbox.centerx
+            else:
+                if self.direction.y > 0:
+                    self.hitbox.bottom = player.hitbox.top
+                elif self.direction.y < 0:
+                    self.hitbox.top = player.hitbox.bottom
+                self.rect.centery = self.hitbox.centery
+
 
 class tnt(BothSprite):
     def __init__(self, pos, direction, groups, z=WORLD_LAYERS['main']):
@@ -185,18 +203,14 @@ class tnt(BothSprite):
             self.exploded = True
             self.kill()
 
-class MonsterHouse(BothSprite):
+class MonsterHouse(CollidableSprite):
     def __init__(self, pos, obj, groups, z=WORLD_LAYERS['main']):
-        frames = import_folder('animation', 'resource', 'rock')
-        if not frames:
-            print(f"Không tìm thấy frame cho monster_house trong animation/monster/monster_house")
-            frames = [pygame.Surface((64, 64))]
-            frames[0].fill('purple')
+        frames = import_image('animation', 'building', 'Goblin_House')
         
         super().__init__(pos, frames, groups, z)
         
         try:
-            self.hp = int(obj.properties.get('hp', 200))
+            self.hp = int(obj.properties['hp'])
         except (ValueError, TypeError) as e:
             self.hp = 200
             
@@ -207,22 +221,27 @@ class MonsterHouse(BothSprite):
         except (ValueError, TypeError) as e:
             self.spawn_rate = 5
             
-        self.monster_type = obj.properties.get('monster_type', 'torch')
+        self.monster_type = obj.properties['monster_type']
         self.last_spawn = pygame.time.get_ticks() / 2500
         print(f"Đã tạo MonsterHouse tại vị trí {self.pos}, kích thước: {self.image.get_size()}")
 
-    def spawn(self):
+    def spawn(self, player_pos):
         current_time = pygame.time.get_ticks() / 2500
-        if current_time - self.last_spawn >= self.spawn_rate:
+        dx = player_pos[0] - self.pos[0]
+        dy = player_pos[1] - self.pos[1]
+        distance = (dx**2 + dy**2)**0.5
+
+        # Chỉ spawn quái nếu khoảng cách <= 200
+        if distance <= 500 and current_time - self.last_spawn >= self.spawn_rate:
             self.last_spawn = current_time
             class TempObj:
                 pass
             new_monster = TempObj()
             new_monster.name = self.monster_type
-            new_monster.properties = {'hp': 100, 'speed': 200.0, 'damage': 10}
+            if self.monster_type == 'TNT':
+                new_monster.properties = {'hp': 50, 'speed': 50.0, 'damage': 10}
+            else:
+                new_monster.properties = {'hp': 70, 'speed': 50.0, 'damage': 15}
             print(f"MonsterHouse spawn quái {self.monster_type}")
             return new_monster
         return None
-
-    def update(self, dt):
-        self.animate(dt)
