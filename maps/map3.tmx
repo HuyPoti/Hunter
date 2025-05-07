@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="20" nextobjectid="238">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="20" nextobjectid="268">
  <tileset firstgid="1" source="../assets/tilesets/Flat.tsx"/>
  <tileset firstgid="41" source="../assets/tilesets/Tree.tsx"/>
  <tileset firstgid="47" source="../assets/tilesets/Elevation.tsx"/>
@@ -305,14 +305,6 @@
   <object id="142" gid="90" x="1598.3" y="386.545" width="64" height="64"/>
   <object id="143" gid="84" x="2046.79" y="325.939" width="64" height="64"/>
   <object id="144" gid="84" x="1595.27" y="62.303" width="64" height="64"/>
-  <object id="145" gid="97" x="-18.5455" y="1212.48" width="128" height="128"/>
-  <object id="146" gid="97" x="11.7576" y="1497.33" width="128" height="128"/>
-  <object id="147" gid="97" x="5.69697" y="251.879" width="128" height="128"/>
-  <object id="148" gid="97" x="226.909" y="145.818" width="128" height="128"/>
-  <object id="149" gid="97" x="2457.21" y="1157.94" width="128" height="128"/>
-  <object id="150" gid="97" x="2351.15" y="1164" width="128" height="128"/>
-  <object id="151" gid="100" x="2394.91" y="1057.94" width="192" height="128"/>
-  <object id="152" gid="101" x="794.909" y="115.515" width="192" height="128"/>
   <object id="159" gid="103" x="2246.06" y="182.545" width="320" height="256"/>
   <object id="160" gid="109" x="2102.67" y="229.333" width="128" height="192"/>
   <object id="161" gid="109" x="1984.48" y="244.485" width="128" height="192"/>
@@ -328,7 +320,7 @@
   </object>
   <object id="154" name="Character" x="387.879" y="636.364">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="m7"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_down"/>
     <property name="graphic" value="friend"/>
@@ -346,7 +338,7 @@
   </object>
   <object id="156" name="Character" x="821.212" y="336.364">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="17"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_down"/>
     <property name="graphic" value="friend"/>
@@ -355,7 +347,7 @@
   </object>
   <object id="157" name="Character" x="1515.15" y="742.424">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="m8"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_down"/>
     <property name="graphic" value="friend"/>
@@ -364,7 +356,7 @@
   </object>
   <object id="158" name="Character" x="2463.64" y="393.939">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="m9"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_down"/>
     <property name="graphic" value="friend"/>
@@ -398,6 +390,42 @@
     <property name="monster_type" value="Torch"/>
     <property name="spawn_rate" type="int" value="2"/>
    </properties>
+  </object>
+  <object id="256" name="Coin" x="352" y="92">
+   <point/>
+  </object>
+  <object id="257" name="Coin" x="488" y="236">
+   <point/>
+  </object>
+  <object id="258" name="Coin" x="140" y="1208">
+   <point/>
+  </object>
+  <object id="259" name="Coin" x="644" y="1496">
+   <point/>
+  </object>
+  <object id="260" name="Coin" x="1112" y="576">
+   <point/>
+  </object>
+  <object id="261" name="Coin" x="2156" y="1544">
+   <point/>
+  </object>
+  <object id="262" name="Coin" x="1848" y="88">
+   <point/>
+  </object>
+  <object id="263" name="Meat" x="500" y="1496">
+   <point/>
+  </object>
+  <object id="264" name="Meat" x="720" y="412">
+   <point/>
+  </object>
+  <object id="265" name="Meat" x="2356" y="812">
+   <point/>
+  </object>
+  <object id="266" name="Meat" x="1584" y="1540">
+   <point/>
+  </object>
+  <object id="267" name="Meat" x="1672" y="96">
+   <point/>
   </object>
  </objectgroup>
 </map>

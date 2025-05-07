@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="18" nextobjectid="592">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="18" nextobjectid="604">
  <tileset firstgid="1" source="../assets/tilesets/Water.tsx"/>
  <tileset firstgid="2" source="../assets/tilesets/Flat.tsx"/>
  <tileset firstgid="42" source="../assets/tilesets/Building_Monster.tsx"/>
@@ -104,7 +104,13 @@
   <object id="561" x="1975.76" y="560.606" width="69.697" height="27.2727"/>
   <object id="562" x="1275.76" y="1009.09" width="63.6364" height="36.3636"/>
  </objectgroup>
- <objectgroup id="17" name="Transition"/>
+ <objectgroup id="17" name="Transition">
+  <object id="592" x="2478.79" y="54.5455" width="90.9091" height="148.485">
+   <properties>
+    <property name="target" value="end"/>
+   </properties>
+  </object>
+ </objectgroup>
  <layer id="1" name="Water" width="40" height="25">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -622,11 +628,6 @@
   <object id="452" gid="64" x="383.152" y="1283.52" width="64" height="64"/>
   <object id="453" gid="64" x="1213.45" y="777.455" width="64" height="64"/>
   <object id="454" gid="79" x="2431.27" y="126.303" width="192" height="192"/>
-  <object id="455" gid="80" x="111.758" y="1433.7" width="128" height="128"/>
-  <object id="456" gid="80" x="520.848" y="203.394" width="128" height="128"/>
-  <object id="457" gid="80" x="936" y="157.939" width="128" height="128"/>
-  <object id="458" gid="80" x="1305.7" y="1497.33" width="128" height="128"/>
-  <object id="459" gid="80" x="1772.36" y="1442.79" width="128" height="128"/>
  </objectgroup>
  <objectgroup id="13" name="Position">
   <object id="460" name="Player" x="54.5455" y="1424.24">
@@ -635,18 +636,9 @@
    </properties>
    <point/>
   </object>
-  <object id="461" name="Character" x="406.061" y="1406.06">
-   <properties>
-    <property name="character_id" value="m1"/>
-    <property name="character_type" value="introducer"/>
-    <property name="direction" value="stand_down"/>
-    <property name="graphic" value="friend"/>
-   </properties>
-   <point/>
-  </object>
   <object id="462" name="Character" x="1245.45" y="109.091">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="m16"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_down"/>
     <property name="graphic" value="friend"/>
@@ -655,7 +647,7 @@
   </object>
   <object id="463" name="Character" x="1700" y="1442.42">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="m18"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_down"/>
     <property name="graphic" value="friend"/>
@@ -664,7 +656,7 @@
   </object>
   <object id="464" name="Character" x="2327.27" y="112.121">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="m20"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_down"/>
     <property name="graphic" value="friend"/>
@@ -768,6 +760,45 @@
     <property name="monster_type" value="Torch"/>
     <property name="spawn_rate" type="int" value="2"/>
    </properties>
+  </object>
+  <object id="593" name="Coin" x="306.061" y="1409.09">
+   <point/>
+  </object>
+  <object id="594" name="Coin" x="381.818" y="878.788">
+   <point/>
+  </object>
+  <object id="595" name="Coin" x="412.121" y="145.455">
+   <point/>
+  </object>
+  <object id="596" name="Coin" x="1230.3" y="1375.76">
+   <point/>
+  </object>
+  <object id="597" name="Coin" x="1227.27" y="296.97">
+   <point/>
+  </object>
+  <object id="598" name="Coin" x="2115.15" y="300">
+   <point/>
+  </object>
+  <object id="599" name="Coin" x="2109.09" y="1024.24">
+   <point/>
+  </object>
+  <object id="600" name="Meat" x="366.667" y="1148.48">
+   <point/>
+  </object>
+  <object id="601" name="Meat" x="1193.94" y="548.485">
+   <point/>
+  </object>
+  <object id="602" name="Meat" x="2127.27" y="724.242">
+   <point/>
+  </object>
+  <object id="603" name="Character" x="412.121" y="1457.58">
+   <properties>
+    <property name="character_id" value="19"/>
+    <property name="character_type" value="introducer"/>
+    <property name="direction" value="stand_down"/>
+    <property name="graphic" value="friend"/>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
  <objectgroup id="16" name="Effect"/>

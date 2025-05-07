@@ -37,6 +37,18 @@ class Button():
 			self.text = self.font.render(self.text_input, True, self.hovering_color)
 		else:
 			self.text = self.font.render(self.text_input, True, self.base_color)
+	def turnon(self):
+		self.text_input = "MUSIC ON"
+		self.text = self.font.render(self.text_input, True, self.base_color)
+		self.image = pygame.transform.scale(self.image, (self.text_rect.width + 100, self.text_rect.height * 1.8))
+		self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
+	def turnoff(self):
+		self.text_input = "MUSIC OFF"
+		self.text = self.font.render(self.text_input, True, self.base_color)
+		self.image = pygame.transform.scale(self.image, (self.text_rect.width + 100, self.text_rect.height * 1.8))
+		self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
+
+
 	# def draw(self, surface):
 	# 	action = False
 	# 	#get mouse position

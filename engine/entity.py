@@ -50,17 +50,17 @@ class Character(Entity):
         self.animate(dt)
 
 class Arrow(Sprite):
-    def __init__(self, surf, pos, direction, groups, z=WORLD_LAYERS['main']):
+    def __init__(self, surf, pos, direction, damage , groups, z=WORLD_LAYERS['main']):
         super().__init__(pos, surf, groups, z)
         self.image = surf
         self.direction = direction
         self.speed = 400
-        self.damage = 10
+        self.damage = damage
         self.lifetime = 2.0
         self.creation_time = pygame.time.get_ticks() / 1000
         self.exploded = False
         self.rect = self.image.get_frect(center=pos)
-        self.hitbox = self.rect.copy().inflate(8, 8)
+        self.hitbox = self.rect.copy().inflate(20, 20)
 
     def update(self, dt, monsters):
         if self.exploded:
@@ -70,6 +70,7 @@ class Arrow(Sprite):
         self.rect.x += self.direction.x * self.speed * dt
         self.rect.y += self.direction.y * self.speed * dt
         self.hitbox.center = self.rect.center
+        
 
         for monster in monsters:
             if self.hitbox.colliderect(monster.hitbox):
@@ -94,13 +95,13 @@ class Coin(BothSprite):
         # self.frames_index = 0
         self.rect = self.image.get_frect(center=pos)
         self.hitbox = self.rect.copy().inflate(-8, -8)
-        self.value = 1
+        self.value = 10
         print(f"Tạo Coin tại {pos}")
 
     def update(self, dt, player):
         self.image = self.frames[0]
         if self.hitbox.colliderect(player.hitbox):
-            player.damage_origin += self.value
+            player.attack_cooldown  += self.value
             print(f"Nhặt Coin! Damage người chơi: {player.damage}")
             self.kill()
 
@@ -110,7 +111,7 @@ class Meat(BothSprite):
         
         self.rect = self.image.get_frect(center=pos)
         self.hitbox = self.rect.copy().inflate(-8, -8)
-        self.value = 10
+        self.value = 15
         print(f"Tạo Meat tại {pos}")
 
     def update(self, dt, player):
@@ -122,7 +123,7 @@ class Meat(BothSprite):
 
 
 class Player(Entity):
-    def __init__(self, pos, frames, groups, facing_direction, collision_sprites, monster_sprites):
+    def __init__(self, pos, frames, groups, facing_direction, collision_sprites):
         super().__init__(pos, frames ,groups, facing_direction)
         self.hp = 200
         self.collision_sprites = collision_sprites
@@ -130,9 +131,8 @@ class Player(Entity):
         self.mode = 'warrior'
         self.speed = 200
         self.damage = 50
-        self.damage_origin = 50
         #attack
-        self.attack_cooldown = 500
+        self.attack_cooldown = 100
         self.attacking = False
         self.last_attack_time = 0
         self.attack_type = None
@@ -142,7 +142,6 @@ class Player(Entity):
         self.rect = self.image.get_frect(center = pos)
         self.hitbox = self.rect.inflate(-self.rect.width / 2, -60)
         self.y_sort = self.rect.centery
-        self.monster_sprites = monster_sprites
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -164,12 +163,12 @@ class Player(Entity):
     def switch_mode(self):
         if self.mode == 'archer':
             self.mode = 'warrior'
-            self.damage = self.damage_origin
+            self.damage = 50
             self.speed = 200
         else:
             self.mode = 'archer'
             self.speed = 250
-            self.damage = self.damage_origin - 10
+            self.damage = 30
         self.frames_index = 0
         self.image = self.frames[self.mode][self.get_state()][self.frames_index]
     def attack(self, keys):
@@ -238,7 +237,7 @@ class Player(Entity):
 
             # Vị trí bắt đầu của mũi tên
             pos = self.rect.center + direction * 50
-            Arrow(rotated_arrow, pos, direction, self.groups() + [self.collision_sprites])
+            Arrow(rotated_arrow, pos, direction, self.damage, self.groups() + [self.collision_sprites])
             
     def move(self, dt):
         self.rect.centerx += self.direction.x * self.speed * dt
@@ -248,24 +247,7 @@ class Player(Entity):
         self.rect.centery += self.direction.y * self.speed * dt
         self.hitbox.centery = self.rect.centery
         self.collisions('vertical')
-
     def collisions(self, axis):
-        #ngăn người chơi với quái
-        for sprite in self.monster_sprites:
-            if sprite.hitbox.colliderect(self.hitbox):
-                if axis == 'horizontal':
-                    if self.direction.x > 0:
-                        self.hitbox.right = sprite.hitbox.left
-                    elif self.direction.x < 0:
-                        self.hitbox.left = sprite.hitbox.right
-                    self.rect.centerx = self.hitbox.centerx
-                else:
-                    if self.direction.y > 0:
-                        self.hitbox.bottom = sprite.hitbox.top
-                    if self.direction.y < 0:
-                        self.hitbox.top = sprite.hitbox.bottom
-                    self.rect.centery = self.hitbox.centery
-                    
         for sprite in self.collision_sprites:
             if sprite.hitbox.colliderect(self.hitbox):
                 if axis == 'horizontal':

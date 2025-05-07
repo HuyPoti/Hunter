@@ -1,6 +1,6 @@
 import pygame
 import math
-from module.sprites import CollidableSprite, BothSprite
+from module.sprites import CollidableSprite, BothSprite, BorderSprite
 from utils.support import import_folder
 from utils.settings import WORLD_LAYERS
 from os.path import join
@@ -38,7 +38,6 @@ class Monster(BothSprite):
             self.speed = float(obj.properties.get['speed'])
         except (ValueError, TypeError) as e:
             self.speed = 100.0
-            
         try:
             self.damage = int(obj.properties.get['damage'])
         except (ValueError, TypeError) as e:
@@ -49,36 +48,42 @@ class Monster(BothSprite):
         self.is_attacking = False
         self.has_thrown_tnt = False
         self.frames_index = 0
+        print(self.speed)
 
-    def move(self, dt):
-        self.rect.centerx += self.direction.x * self.speed * dt
-        self.hitbox.centerx = self.rect.centerx
-        self.collisions('horizontal')
 
-        self.rect.centery += self.direction.y * self.speed * dt
-        self.hitbox.centery = self.rect.centery
-        self.collisions('vertical')
+    def move(self, dt, player):
+        # Tính vector hướng đến người chơi
+        direction_vector = pygame.math.Vector2(
+            player.rect.centerx - self.rect.centerx,
+            player.rect.centery - self.rect.centery
+        )
 
-        # Cập nhật self.pos
+        # Ưu tiên trục lớn hơn
+        if abs(direction_vector.x) > abs(direction_vector.y):
+            directions = [(1 if direction_vector.x > 0 else -1, 0), (0, 1 if direction_vector.y > 0 else -1)]
+        else:
+            directions = [(0, 1 if direction_vector.y > 0 else -1), (1 if direction_vector.x > 0 else -1, 0)]
+
+        # Thử từng hướng
+        for dx, dy in directions:
+            new_hitbox = self.hitbox.copy()
+            new_hitbox.centerx += dx * self.speed * dt
+            new_hitbox.centery += dy * self.speed * dt
+
+            if not self.check_collision(new_hitbox):
+                self.hitbox = new_hitbox
+                break  # Tìm thấy hướng không bị cản thì dừng lại
+
+        self.rect.center = self.hitbox.center
         self.pos = list(self.rect.center)
 
-    def collisions(self, axis):
-        if not self.collision_sprites:
-            return
+    def check_collision(self, hitbox):
         for sprite in self.collision_sprites:
-            if sprite.hitbox.colliderect(self.hitbox):
-                if axis == 'horizontal':
-                    if self.direction.x > 0:
-                        self.hitbox.right = sprite.hitbox.left
-                    elif self.direction.x < 0:
-                        self.hitbox.left = sprite.hitbox.right
-                    self.rect.centerx = self.hitbox.centerx
-                else:
-                    if self.direction.y > 0:
-                        self.hitbox.bottom = sprite.hitbox.top
-                    elif self.direction.y < 0:
-                        self.hitbox.top = sprite.hitbox.bottom
-                    self.rect.centery = self.hitbox.centery
+            if sprite.hitbox.colliderect(hitbox):
+                return True
+        return False
+
+
 
     def animate(self, dt):
         self.frames_index += (ANIMATION_SPEED / 2) * dt  # Tốc độ animation, có thể điều chỉnh
@@ -100,14 +105,14 @@ class Monster(BothSprite):
         # Chọn trạng thái animation dựa trên khoảng cách và hướng
 
         if self.name == 'Torch':
-            if distance > 20 and distance < 500:
+            if distance > 80 and distance < 300:
                 self.is_attacking = False
                 if abs(dx) >= abs(dy):
                     self.state = 'walk_right' if dx >= 0 else 'walk_left'
                 else:
                     self.state = 'walk_right' if dy >= 0 else 'walk_left'
-                self.move(dt)
-            elif distance > 500:
+                self.move(dt, player)
+            elif distance > 300:
                 self.is_attacking = False
                 if abs(dx) > abs(dy):
                     self.state = 'stand_right' if dx > 0 else 'stand_left'
@@ -140,7 +145,7 @@ class Monster(BothSprite):
                     self.state = 'stand_right' if dy > 0 else 'stand_left'
             else:
                 if distance>200:
-                    self.move(dt)
+                    self.move(dt, player)
                 if abs(dx) > abs(dy):
                     self.state = 'attack_right' if dx >= 0 else 'attack_left'
                 else:
@@ -259,9 +264,9 @@ class MonsterHouse(CollidableSprite):
             new_monster = TempObj()
             new_monster.name = self.monster_type
             if self.monster_type == 'TNT':
-                new_monster.properties = {'hp': 50, 'speed': 50.0, 'damage': 10}
+                new_monster.properties = {'hp': 50, 'speed': 100, 'damage': 10}
             else:
-                new_monster.properties = {'hp': 70, 'speed': 50.0, 'damage': 15}
+                new_monster.properties = {'hp': 70, 'speed': 200, 'damage': 15}
             print(f"MonsterHouse spawn quái {self.monster_type}")
             return new_monster
         return None

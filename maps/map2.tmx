@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="20" nextobjectid="363">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="20" nextobjectid="379">
  <tileset firstgid="1" source="../assets/tilesets/Water.tsx"/>
  <tileset firstgid="2" source="../assets/tilesets/Elevation.tsx"/>
  <tileset firstgid="34" source="../assets/tilesets/Bridge_All.tsx"/>
@@ -378,7 +378,7 @@
   </object>
   <object id="346" name="Character" x="414" y="1256">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="m2"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_left"/>
     <property name="graphic" value="friend"/>
@@ -387,7 +387,7 @@
   </object>
   <object id="347" name="Character" x="480" y="934">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="m3"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_down"/>
     <property name="graphic" value="friend"/>
@@ -396,7 +396,7 @@
   </object>
   <object id="348" name="Character" x="798" y="546">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="m4"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_left"/>
     <property name="graphic" value="friend"/>
@@ -405,7 +405,7 @@
   </object>
   <object id="349" name="Character" x="2286" y="1010">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="m5"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_left"/>
     <property name="graphic" value="friend"/>
@@ -414,7 +414,7 @@
   </object>
   <object id="350" name="Character" x="2408" y="528">
    <properties>
-    <property name="character_id" value="m1"/>
+    <property name="character_id" value="m6"/>
     <property name="character_type" value="introducer"/>
     <property name="direction" value="stand_left"/>
     <property name="graphic" value="friend"/>
@@ -434,6 +434,39 @@
     <property name="monster_type" value="Torch"/>
     <property name="spawn_rate" type="int" value="2"/>
    </properties>
+  </object>
+  <object id="368" name="Coin" x="202.667" y="926.667">
+   <point/>
+  </object>
+  <object id="369" name="Coin" x="405.333" y="354.667">
+   <point/>
+  </object>
+  <object id="370" name="Coin" x="314.667" y="1222.67">
+   <point/>
+  </object>
+  <object id="371" name="Coin" x="1729.33" y="1396">
+   <point/>
+  </object>
+  <object id="372" name="Coin" x="2216" y="1013.33">
+   <point/>
+  </object>
+  <object id="373" name="Coin" x="2161.33" y="576">
+   <point/>
+  </object>
+  <object id="374" name="Meat" x="570.667" y="792">
+   <point/>
+  </object>
+  <object id="375" name="Meat" x="725.333" y="392">
+   <point/>
+  </object>
+  <object id="376" name="Meat" x="1482.67" y="1044">
+   <point/>
+  </object>
+  <object id="377" name="Meat" x="1982.67" y="1301.33">
+   <point/>
+  </object>
+  <object id="378" name="Meat" x="2273.33" y="410.667">
+   <point/>
   </object>
  </objectgroup>
  <objectgroup id="12" name="Effect">
@@ -468,7 +501,7 @@
   <object id="277" x="498" y="646" width="12" height="50"/>
   <object id="278" x="448.667" y="622" width="56" height="20"/>
   <object id="279" x="430" y="578" width="20" height="64"/>
-  <object id="280" x="66" y="559.333" width="370" height="22"/>
+  <object id="280" x="66" y="535.333" width="370" height="46"/>
   <object id="281" x="56" y="384" width="26" height="178"/>
   <object id="282" x="64" y="360" width="188" height="32"/>
   <object id="283" x="244" y="320" width="20" height="68"/>
@@ -535,5 +568,6 @@
   <object id="351" x="2554.67" y="178.667" width="13.3333" height="398.667"/>
   <object id="352" x="-8" y="1144" width="22.6667" height="197.333"/>
   <object id="353" x="453.333" y="830.667" width="122.667" height="50.6667"/>
+  <object id="363" x="113.333" y="1022.67"/>
  </objectgroup>
 </map>

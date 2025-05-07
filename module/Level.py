@@ -72,7 +72,8 @@ class Level:
                 'hp': self.player.hp,
                 'damage': self.player.damage,
                 'mode': self.player.mode,
-                'speed': self.player.speed
+                'speed': self.player.speed,
+                'attack_cooldown': self.player.attack_cooldown
             }
 
         for x, y, surf in tmx_map.get_layer_by_name('Water').tiles():
@@ -114,7 +115,13 @@ class Level:
                     self.overworld_frames['character'], 
                     self.all_sprites,
                     'stand_right', 
-                    self.collision_sprites, self.monsters)
+                    self.collision_sprites)
+                if player_state:
+                    self.player.hp = player_state.get('hp', self.player.hp)
+                    self.player.damage = player_state.get('damage', self.player.damage)
+                    self.player.mode = player_state.get('mode', self.player.mode)
+                    self.player.speed = player_state.get('speed', self.player.speed)
+                    self.player.attack_cooldown = player_state.get('attack_cooldown', self.player.attack_cooldown)
                 
             elif obj.name == 'Character':
                 Character(
@@ -232,12 +239,12 @@ class Level:
 
     def display_hp(self): # Hiển thị HP và Damage
         hp_text = self.fonts['dialog'].render(f"HP: {self.player.hp}", True, (0, 128, 0))
-        damage_text = self.fonts['dialog'].render(f"Damage: {self.player.damage_origin}", True, (255, 0, 0))
+        attack_cooldown = self.fonts['dialog'].render(f"Speed_Attack: {self.player.attack_cooldown}", True, (255, 0, 0))
         screen_width, screen_height = self.display_surface.get_size()
         hp_rect = hp_text.get_rect(bottomleft=(10, screen_height - 10))
-        damage_rect = damage_text.get_rect(bottomleft=(10, screen_height - 40))
+        damage_rect = attack_cooldown.get_rect(bottomleft=(10, screen_height - 40))
         self.display_surface.blit(hp_text, hp_rect)
-        self.display_surface.blit(damage_text, damage_rect)
+        self.display_surface.blit(attack_cooldown, damage_rect)
 
     def run(self, dt):
         self.display_surface.fill('black') 
