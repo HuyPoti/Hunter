@@ -105,8 +105,6 @@ class Monster(BothSprite):
                 print(f"{self.name} tấn công người chơi! HP người chơi: {player.hp}")
                 if player.hp <= 0:
                     print("Game Over!")
-                    pygame.quit()
-                    exit()
 
         elif self.name == 'TNT':
             if  distance > 300:
@@ -140,19 +138,7 @@ class Monster(BothSprite):
 
         self.rect = self.image.get_frect(center = self.pos)
         self.hitbox = self.rect.copy(). inflate(-10, -10)
-        if self.hitbox.colliderect(player.hitbox):
-            if self.direction!=0:
-                if self.direction.x > 0:  # Quái vật di chuyển sang phải
-                    self.hitbox.right = player.hitbox.left
-                elif self.direction.x < 0:  # Quái vật di chuyển sang trái
-                    self.hitbox.left = player.hitbox.right
-                self.rect.centerx = self.hitbox.centerx
-            else:
-                if self.direction.y > 0:
-                    self.hitbox.bottom = player.hitbox.top
-                elif self.direction.y < 0:
-                    self.hitbox.top = player.hitbox.bottom
-                self.rect.centery = self.hitbox.centery
+
 
 
 class tnt(BothSprite):
@@ -206,7 +192,7 @@ class tnt(BothSprite):
 class MonsterHouse(CollidableSprite):
     def __init__(self, pos, obj, groups, z=WORLD_LAYERS['main']):
         frames = import_image('animation', 'building', 'Goblin_House')
-        
+        self.destroyed = False
         super().__init__(pos, frames, groups, z)
         
         try:
@@ -224,7 +210,17 @@ class MonsterHouse(CollidableSprite):
         self.monster_type = obj.properties['monster_type']
         self.last_spawn = pygame.time.get_ticks() / 2500
         print(f"Đã tạo MonsterHouse tại vị trí {self.pos}, kích thước: {self.image.get_size()}")
-
+    def take_damage(self, damage):
+        """
+        Giảm HP của MonsterHouse khi bị tấn công và kiểm tra nếu bị phá hủy.
+        """
+        self.hp -= damage
+        print(f"MonsterHouse tại {self.pos} nhận {damage} sát thương! HP còn lại: {self.hp}")
+        
+        if self.hp <= 0:
+            self.destroyed = True
+            print(f"MonsterHouse tại {self.pos} đã bị phá hủy!")
+            self.kill()  # Xóa MonsterHouse khỏi tất cả các nhóm sprite
     def spawn(self, player_pos):
         current_time = pygame.time.get_ticks() / 2500
         dx = player_pos[0] - self.pos[0]

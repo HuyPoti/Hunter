@@ -7,6 +7,7 @@ from engine.groups import AllSprites
 from utils.support import *
 from data.game_data import *
 from ui.dialog import DialogTree
+from ui.end_screen import EndScreen
 import pygame
 
 class Level:
@@ -135,7 +136,7 @@ class Level:
             #     Portal((obj.x, obj.y), (self.all_sprites, self.items), target_map, WORLD_LAYERS['main'])
 
             elif obj.name in ('Torch', 'TNT'):
-                Monster((obj.x, obj.y), obj, (self.all_sprites, self.monsters))
+                Monster((obj.x, obj.y), obj, (self.all_sprites, self.monsters), WORLD_LAYERS['main'])
             elif obj.name == 'MonsterHouse':
                 MonsterHouse((obj.x, obj.y), obj, (self.all_sprites, self.monster_houses))
 
@@ -152,6 +153,7 @@ class Level:
             for monster in self.monsters:
                 if self.player.attack_hitbox.colliderect(monster.hitbox):
                     try:
+                        # self.player
                         monster.hp -= damage
                         self.player.has_damaged = True
                         print(f"Quái {monster.name} bị tấn công! HP còn lại: {monster.hp}")
@@ -163,12 +165,9 @@ class Level:
             for house in self.monster_houses:
                 if self.player.attack_hitbox.colliderect(house.rect):
                     try:
-                        house.hp -= damage
                         self.player.has_damaged = True
                         print(f"Điểm spawn quái HP: {house.hp}")
-                        if house.hp <= 0:
-                            house.kill()
-                            print("Phá hủy điểm spawn quái!")
+                        house.take_damage(damage)
                     except TypeError as e:
                         print(f"Lỗi khi trừ HP nhà quái: {e}, damage: {damage}, house.hp: {house.hp}")
 
@@ -201,11 +200,13 @@ class Level:
         self.player.unblock()
     def transition_check(self):
         sprites = [sprite for sprite in self.transition_sprites if sprite.rect.colliderect(self.player.hitbox)]
-        if sprites:
+        if sprites and  all(house.destroyed for house in self.monster_houses):
             self.player.block()
             self.transition_target = [sprite.target for sprite in sprites]  # Lấy danh sách các target
-            print(self.transition_target)
             self.tint_mode = 'tint'
+            if self.transition_target[0] == 'end':
+                return True
+        return False
     def tint_screen(self, dt):
         if self.tint_mode == 'untint':
             self.tint_progress -= self.tint_speed * dt
@@ -215,6 +216,8 @@ class Level:
             if self.tint_progress >= 255:
                 if self.transition_target and self.transition_target[0] in self.tmx_maps:
                     self.current_map = self.transition_target[0]
+                    if (self.current_map == 'end'):
+                        EndScreen(self.display_surface, 'win')
                     self.setup(self.tmx_maps[self.transition_target[0]], 'start')
                     self.tint_mode = 'untint'
                     self.transition_target = None
@@ -227,7 +230,7 @@ class Level:
 
     def display_hp(self): # Hiển thị HP và Damage
         hp_text = self.fonts['dialog'].render(f"HP: {self.player.hp}", True, (0, 128, 0))
-        damage_text = self.fonts['dialog'].render(f"Damage: {self.player.damage}", True, (255, 0, 0))
+        damage_text = self.fonts['dialog'].render(f"Damage: {self.player.damage_origin}", True, (255, 0, 0))
         screen_width, screen_height = self.display_surface.get_size()
         hp_rect = hp_text.get_rect(bottomleft=(10, screen_height - 10))
         damage_rect = damage_text.get_rect(bottomleft=(10, screen_height - 40))
@@ -240,7 +243,7 @@ class Level:
         # Spawn quái từ điểm spawn
         for house in self.monster_houses:
         # Điều chỉnh vị trí spawn quái vật
-            spawn_pos = (house.pos[0] + 10, house.pos[1] + 10)  # Trừ 10 pixel trên cả trục x và y
+            spawn_pos = (house.pos[0], house.pos[1] + 10)
             new_monster = house.spawn(self.player.rect.center)
             if new_monster:
                 Monster(spawn_pos, new_monster, (self.all_sprites, self.monsters))
@@ -285,6 +288,7 @@ class Level:
         # self.all_sprites.update(dt)
 
         self.all_sprites.draw(self.player.rect.center)
+        self.display_hp() 
         if self.dialog_tree: self.dialog_tree.update()
 
         self.tint_screen(dt)

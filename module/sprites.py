@@ -19,7 +19,7 @@ class BorderSprite(Sprite):
 class CollidableSprite(Sprite):
     def __init__(self, pos, surf, groups, z = WORLD_LAYERS['main']):
         super().__init__(pos, surf, groups, z)
-        self.hitbox = self.rect.inflate(-20, -self.rect.height * 0.6)
+        self.hitbox = self.rect.inflate(-10, -self.rect.height * 0.6)
 
 class Animation(Sprite):
     def __init__(self, pos, frames, groups, z = WORLD_LAYERS['main']):
