@@ -1,5 +1,5 @@
 import pygame.__briefcase
-import pygame._sprite
+import pygame.sprite
 import pygame
 from utils.settings import *
 from engine.timer import Timer
@@ -31,7 +31,7 @@ class DialogTree:
     def update(self):
         self.dialog_timer.update()
         self.input()
-class DialogSprite(pygame._sprite.Sprite):
+class DialogSprite(pygame.sprite.Sprite):
     def __init__(self, message, character, groups, font):
         super().__init__(groups)
         self.z = WORLD_LAYERS['top']
