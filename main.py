@@ -20,6 +20,11 @@ class Game:
         self.menu = Menu(self.display_surface)
         self.end_screen = None
         self.clock = pygame.time.Clock()
+        pygame.mixer.init()
+
+        pygame.mixer.music.load(join('assets', 'music', 'music.mp3'))
+
+        pygame.mixer.music.set_volume(0.5)
     def import_assets(self):  
         self.tmx_maps = {
             'map1': load_pygame(join('.', 'maps', 'map1.tmx')),
@@ -43,10 +48,16 @@ class Game:
             if in_menu:
                 # Hiển thị menu
                 result = self.menu.run()
+           
+
                 if result == "play":
                     self.level = Level(self.tmx_maps)  # Bắt đầu trò chơi
                     in_game = True
                     in_menu = False
+                elif result == "musicon":
+                    pygame.mixer.music.play(-1)
+                elif result == "musicoff":
+                    pygame.mixer.music.stop()
                 elif result == "quit":
                     pygame.quit()
                     sys.exit()
