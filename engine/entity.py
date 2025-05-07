@@ -126,6 +126,7 @@ class Player(Entity):
         super().__init__(pos, frames ,groups, facing_direction)
         self.hp = 200
         self.collision_sprites = collision_sprites
+        # self.z = WORLD_LAYERS['main']
         self.mode = 'warrior'
         self.speed = 200
         self.damage = 50
@@ -200,14 +201,14 @@ class Player(Entity):
         self.block()
         self.frames_index = 0
         self.attack_type = attack_type
-        self.original_rect = self.rect.copy()
-        if attack_type == 'attack_up':
-            self.rect.x -= 20
+        # self.original_rect = self.rect.copy()
+        # if attack_type == 'attack_up':
+        #     self.rect.x -= 20
         self.image = self.frames[self.mode][attack_type][self.frames_index]
         if self.mode == 'warrior':
             # Tạo vùng sát thương cho warrior
             if attack_type == 'attack_left':
-                self.hitbox = pygame.Rect(self.rect.left - 50, self.rect.top, self.rect.width + 50, self.rect.height)
+                self.attack_hitbox = pygame.Rect(self.rect.left - 50, self.rect.top, self.rect.width + 50, self.rect.height)
             elif attack_type == 'attack_right':
                 self.attack_hitbox = pygame.Rect(self.rect.right + 50, self.rect.top, self.rect.width + 50, self.rect.height)
             elif attack_type == 'attack_up':
@@ -313,8 +314,8 @@ class Player(Entity):
                 self.attacking = False
                 self.frames_index = 0
                 self.image = self.frames[self.mode][self.get_state()][self.frames_index]
-                if hasattr(self, 'original_rect'):
-                    self.rect = self.original_rect
+                # if hasattr(self, 'original_rect'):
+                #     self.rect = self.original_rect
             else:
                 # Hiển thị khung hình tiếp theo của hoạt ảnh tấn công
                 self.image = self.frames[self.mode][self.attack_type][int(self.frames_index)]
