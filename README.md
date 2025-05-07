@@ -92,5 +92,5 @@ python main.py
 - Dự án được làm bởi team 5 người: Nguyễn Gia Huy, Ngô Đăng Khoa, Nông Thị Nhật Lệ, Cao Thị Xuân Đạt, Liên Quốc Đại Tâm
 - Dự án được hướng dẫn bởi TS. Trần Sơn Hải và TG. Lê Thanh Thoại
 
-#Giấy phép
+# Giấy phép
 MIT License.
