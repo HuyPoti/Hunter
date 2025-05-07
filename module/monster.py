@@ -7,7 +7,7 @@ from os.path import join
 from utils.support import *
 
 class Monster(BothSprite):
-    def __init__(self, pos, obj, groups, z=WORLD_LAYERS['main']):
+    def __init__(self, pos, obj, groups, collision_sprites=None, z=WORLD_LAYERS['main']):
         self.last_attack_time = 0
         self.attack_cooldown = 1.0
         self.name = obj.name
@@ -27,6 +27,7 @@ class Monster(BothSprite):
 
         super().__init__(pos, frames[self.state], groups, z)
         self.frames = frames
+        self.collision_sprites = collision_sprites if collision_sprites is not None else pygame.sprite.Group()
         
         try:
             self.hp = obj.properties.get['hp']
@@ -49,6 +50,36 @@ class Monster(BothSprite):
         self.has_thrown_tnt = False
         self.frames_index = 0
 
+    def move(self, dt):
+        self.rect.centerx += self.direction.x * self.speed * dt
+        self.hitbox.centerx = self.rect.centerx
+        self.collisions('horizontal')
+
+        self.rect.centery += self.direction.y * self.speed * dt
+        self.hitbox.centery = self.rect.centery
+        self.collisions('vertical')
+
+        # Cập nhật self.pos
+        self.pos = list(self.rect.center)
+
+    def collisions(self, axis):
+        if not self.collision_sprites:
+            return
+        for sprite in self.collision_sprites:
+            if sprite.hitbox.colliderect(self.hitbox):
+                if axis == 'horizontal':
+                    if self.direction.x > 0:
+                        self.hitbox.right = sprite.hitbox.left
+                    elif self.direction.x < 0:
+                        self.hitbox.left = sprite.hitbox.right
+                    self.rect.centerx = self.hitbox.centerx
+                else:
+                    if self.direction.y > 0:
+                        self.hitbox.bottom = sprite.hitbox.top
+                    elif self.direction.y < 0:
+                        self.hitbox.top = sprite.hitbox.bottom
+                    self.rect.centery = self.hitbox.centery
+
     def animate(self, dt):
         self.frames_index += (ANIMATION_SPEED / 2) * dt  # Tốc độ animation, có thể điều chỉnh
         if self.frames_index >= len(self.frames[self.state]):
@@ -67,6 +98,7 @@ class Monster(BothSprite):
         distance = (dx**2 + dy**2)**0.5
 
         # Chọn trạng thái animation dựa trên khoảng cách và hướng
+
         if self.name == 'Torch':
             if distance > 20 and distance < 500:
                 self.is_attacking = False
@@ -74,9 +106,7 @@ class Monster(BothSprite):
                     self.state = 'walk_right' if dx >= 0 else 'walk_left'
                 else:
                     self.state = 'walk_right' if dy >= 0 else 'walk_left'
-                self.pos[0] += self.speed * self.direction.x * dt
-                self.pos[1] += self.speed * self.direction.y * dt
-                self.rect.x, self.rect.y = self.pos[0], self.pos[1]
+                self.move(dt)
             elif distance > 500:
                 self.is_attacking = False
                 if abs(dx) > abs(dy):
@@ -85,26 +115,21 @@ class Monster(BothSprite):
                     self.state = 'stand_right' if dy > 0 else 'stand_left'
             else:
                 self.is_attacking = True
-                if self.name == 'Torch':
-                    if abs(dx) > abs(dy):
-                        self.state = 'attack_right' if dx >= 0 else 'attack_left'
-                    else:
-                        self.state = 'attack_down' if dy >= 0 else 'attack_up'
+                if abs(dx) > abs(dy):
+                    self.state = 'attack_right' if dx >= 0 else 'attack_left'
                 else:
-                    if abs(dx) > abs(dy):
-                        self.state = 'attack_right' if dx > 0 else 'attack_left'
-                    else:
-                        self.state = 'attack_right' if dy > 0 else 'attack_left'
+                    self.state = 'attack_down' if dy >= 0 else 'attack_up'
 
             current_time = pygame.time.get_ticks() / 1000
-            if (player and self.rect.colliderect(player.rect) and 
-                int(self.frames_index) % len(self.frames[self.state]) == 0 and 
+            if (self.is_attacking and self.hitbox.colliderect(player.hitbox) and 
+                int(self.frames_index) >= len(self.frames[self.state]) - 1 and 
                 current_time - self.last_attack_time >= self.attack_cooldown):
                 self.last_attack_time = current_time
                 player.hp -= self.damage
                 print(f"{self.name} tấn công người chơi! HP người chơi: {player.hp}")
                 if player.hp <= 0:
                     print("Game Over!")
+
 
         elif self.name == 'TNT':
             if  distance > 300:
@@ -115,9 +140,7 @@ class Monster(BothSprite):
                     self.state = 'stand_right' if dy > 0 else 'stand_left'
             else:
                 if distance>200:
-                    self.pos[0] += self.speed * self.direction.x * dt
-                    self.pos[1] += self.speed * self.direction.y * dt
-                self.is_attacking = True
+                    self.move(dt)
                 if abs(dx) > abs(dy):
                     self.state = 'attack_right' if dx >= 0 else 'attack_left'
                 else:
@@ -134,8 +157,9 @@ class Monster(BothSprite):
                     print(f"{self.name} ném TNT tại {tnt_pos}")
                     self.has_thrown_tnt = False
 
-        self.image = self.frames[self.state][int(self.frames_index % len(self.frames[self.state]))]
 
+
+        self.animate(dt)
         self.rect = self.image.get_frect(center = self.pos)
         self.hitbox = self.rect.copy(). inflate(-10, -10)
 

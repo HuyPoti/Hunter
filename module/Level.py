@@ -114,7 +114,7 @@ class Level:
                     self.overworld_frames['character'], 
                     self.all_sprites,
                     'stand_right', 
-                    self.collision_sprites)
+                    self.collision_sprites, self.monsters)
                 
             elif obj.name == 'Character':
                 Character(
@@ -136,7 +136,9 @@ class Level:
             #     Portal((obj.x, obj.y), (self.all_sprites, self.items), target_map, WORLD_LAYERS['main'])
 
             elif obj.name in ('Torch', 'TNT'):
-                Monster((obj.x, obj.y), obj, (self.all_sprites, self.monsters), WORLD_LAYERS['main'])
+
+                Monster((obj.x, obj.y), obj, (self.all_sprites, self.monsters), self.collision_sprites)
+
             elif obj.name == 'MonsterHouse':
                 MonsterHouse((obj.x, obj.y), obj, (self.all_sprites, self.monster_houses))
 
@@ -243,11 +245,16 @@ class Level:
         # Spawn quái từ điểm spawn
         for house in self.monster_houses:
         # Điều chỉnh vị trí spawn quái vật
-            spawn_pos = (house.pos[0], house.pos[1] + 10)
+            spawn_pos = house.rect.center  #spawn giữa nhà quái
+
             new_monster = house.spawn(self.player.rect.center)
             if new_monster:
-                Monster(spawn_pos, new_monster, (self.all_sprites, self.monsters))
+                Monster(spawn_pos, new_monster, (self.all_sprites, self.monsters), self.collision_sprites)
     
+        # Quái update
+        for monster in self.monsters:
+            monster.monster_update(dt, self.player.rect.center, self.player, self.all_sprites)
+
         # Cập nhật tất cả sprite còn lại
         for sprite in self.all_sprites:
             if not isinstance(sprite, (tnt, Arrow, Coin, Meat)):
@@ -272,10 +279,6 @@ class Level:
         # for sprite in self.all_sprites:
         #     if isinstance(sprite, Portal):
         #         sprite.update(dt, self.player, self.change_map)
-        
-        # Quái update
-        for monster in self.monsters:
-            monster.monster_update(dt, self.player.rect.center, self.player, self.all_sprites)
 
         # Kiểm tra va chạm
         self.check_collisions()
